@@ -1,0 +1,45 @@
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
+
+Copyright (C) 2024 Yunluo Linux Project Contributors
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+---
+
+For the full text of the GNU General Public License v3.0, see:
+https://www.gnu.org/licenses/gpl-3.0.txt
+
+---
+
+Additional Notes:
+
+1. Linux Kernel
+   The Linux kernel included in this project is licensed under GPL-2.0.
+   See: https://www.kernel.org/doc/html/latest/process/license-rules.html
+
+2. Arch Linux Packages
+   Various packages from Arch Linux ARM are included, each with their own licenses.
+   Refer to individual package licenses via: pacman -Qi <package-name>
+
+3. Firmware Blobs
+   Proprietary firmware files extracted from the stock Android system are included
+   for device functionality. These files are:
+   - Copyright by their respective owners (MediaTek, Xiaomi, etc.)
+   - Redistributed under fair use for device owners
+   - Not covered by GPL license
+
+4. Third-party Components
+   This project may include or depend on third-party software components,
+   each with their own license terms. See NOTICE file for attribution.
