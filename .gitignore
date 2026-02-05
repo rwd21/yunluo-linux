@@ -1,0 +1,74 @@
+# Build artifacts
+build/
+*.img
+*.tar.gz
+*.zip
+*.cpio
+*.cpio.gz
+
+# Kernel build
+kernel/linux-*/
+kernel/*.tar.xz
+*.o
+*.ko
+*.mod
+*.mod.c
+.tmp_versions/
+modules.order
+Module.symvers
+
+# Root filesystem
+rootfs/archlinux-arm/
+rootfs/*.tar.gz
+
+# Firmware (if extracted)
+firmware/*.bin
+firmware/**/*.bin
+firmware/**/*.dat
+
+# Temporary files
+*.swp
+*.swo
+*~
+.*.swp
+.*.swo
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Logs
+*.log
+dmesg.txt
+
+# Downloaded files
+downloads/
+*.deb
+*.rpm
+
+# Build configuration (user-specific)
+.config.local
+config.local
+
+# Backup files
+*.bak
+*.backup
+*-backup
+
+# QEMU related
+qemu/
+*.qcow2
+
+# Test artifacts
+test-output/
+*.test

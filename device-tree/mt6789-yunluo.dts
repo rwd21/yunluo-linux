@@ -1,0 +1,201 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * Device Tree for Xiaomi Redmi Pad (yunluo)
+ * MediaTek MT6789 (Helio G99) SoC
+ *
+ * Copyright (C) 2024 Yunluo Linux Project
+ */
+
+/dts-v1/;
+#include "mt6789.dtsi"
+
+/ {
+	model = "Xiaomi Redmi Pad";
+	compatible = "xiaomi,yunluo", "mediatek,mt6789";
+
+	aliases {
+		serial0 = &uart0;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+		bootargs = "console=tty0 console=ttyMT0,115200n8 root=/dev/mmcblk0p30 rootwait rw";
+	};
+
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0 0x40000000 0 0x80000000>; /* 2GB, adjust for 3GB/4GB/6GB variants */
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		/* Reserve memory for various subsystems */
+		consys-reserve-memory {
+			compatible = "mediatek,consys-reserve-memory";
+			no-map;
+			size = <0 0x200000>; /* 2MB for WiFi/BT */
+			alignment = <0 0x200000>;
+			alloc-ranges = <0 0x40000000 0 0x80000000>;
+		};
+	};
+
+	gpio-keys {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&gpio_keys_default>;
+
+		power {
+			label = "Power Button";
+			gpios = <&pio 42 1>; /* GPIO42, active low */
+			linux,code = <116>; /* KEY_POWER */
+			wakeup-source;
+		};
+
+		volume-up {
+			label = "Volume Up";
+			gpios = <&pio 43 1>; /* GPIO43, active low */
+			linux,code = <115>; /* KEY_VOLUMEUP */
+		};
+
+		volume-down {
+			label = "Volume Down";
+			gpios = <&pio 44 1>; /* GPIO44, active low */
+			linux,code = <114>; /* KEY_VOLUMEDOWN */
+		};
+	};
+
+	panel {
+		compatible = "simple-panel";
+		power-supply = <&mt6368_vdd>;
+		backlight = <&backlight>;
+
+		port {
+			panel_in: endpoint {
+				remote-endpoint = <&dsi_out>;
+			};
+		};
+	};
+
+	backlight: backlight {
+		compatible = "pwm-backlight";
+		pwms = <&pwm 0 1000000>;
+		brightness-levels = <0 10 20 30 40 50 60 70 80 90 100>;
+		default-brightness-level = <8>;
+	};
+};
+
+&uart0 {
+	status = "okay";
+};
+
+&i2c0 {
+	status = "okay";
+	clock-frequency = <400000>;
+
+	/* Touchscreen - device specific, needs identification */
+	touchscreen@5d {
+		compatible = "goodix,gt9xx";
+		reg = <0x5d>;
+		interrupt-parent = <&pio>;
+		interrupts = <14 0x2>; /* GPIO14, falling edge */
+		reset-gpios = <&pio 15 0>;
+		irq-gpios = <&pio 14 0>;
+	};
+};
+
+&i2c1 {
+	status = "okay";
+};
+
+&mmc0 {
+	status = "okay";
+	bus-width = <8>;
+	max-frequency = <200000000>;
+	cap-mmc-highspeed;
+	mmc-hs200-1_8v;
+	mmc-hs400-1_8v;
+	cap-mmc-hw-reset;
+	no-sd;
+	no-sdio;
+	non-removable;
+	vmmc-supply = <&mt6368_vemc>;
+	vqmmc-supply = <&mt6368_vio18>;
+};
+
+&mmc1 {
+	status = "okay";
+	bus-width = <4>;
+	max-frequency = <200000000>;
+	cap-sd-highspeed;
+	sd-uhs-sdr50;
+	sd-uhs-sdr104;
+	cd-gpios = <&pio 23 0>; /* SD card detect */
+	vmmc-supply = <&mt6368_vmch>;
+	vqmmc-supply = <&mt6368_vmc>;
+};
+
+&usb {
+	status = "okay";
+	dr_mode = "otg";
+	usb-role-switch;
+};
+
+&pwm {
+	status = "okay";
+};
+
+&dsi0 {
+	status = "okay";
+	
+	port {
+		dsi_out: endpoint {
+			remote-endpoint = <&panel_in>;
+		};
+	};
+};
+
+&pio {
+	gpio_keys_default: gpio_keys_default {
+		pins_cmd_dat {
+			pinmux = <MT6789_PIN_42_KPCOL0__FUNC_GPIO42>,
+				 <MT6789_PIN_43_KPCOL1__FUNC_GPIO43>,
+				 <MT6789_PIN_44_KPROW0__FUNC_GPIO44>;
+			input-enable;
+			bias-pull-up;
+		};
+	};
+};
+
+/* WiFi/BT SDIO interface */
+&mmc2 {
+	status = "okay";
+	bus-width = <4>;
+	max-frequency = <200000000>;
+	cap-sd-highspeed;
+	cap-sdio-irq;
+	keep-power-in-suspend;
+	wakeup-source;
+	non-removable;
+	vmmc-supply = <&mt6368_vmch>;
+	vqmmc-supply = <&mt6368_vmc>;
+};
+
+/*
+ * NOTE: This is a template device tree
+ * 
+ * The following still need to be configured:
+ * - Exact GPIO pin numbers (to be determined from stock kernel)
+ * - Touchscreen I2C address and compatible string
+ * - Display panel specific configuration
+ * - Audio codec configuration
+ * - Camera configuration (optional)
+ * - Sensor configuration
+ * - Battery/charging configuration
+ * 
+ * Extract from stock device tree:
+ * adb pull /sys/firmware/devicetree/base /tmp/stock-dt
+ * dtc -I fs -O dts /tmp/stock-dt > stock-yunluo.dts
+ */
