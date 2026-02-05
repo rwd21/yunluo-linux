@@ -1,16 +1,21 @@
-# Yunluo Linux
+# Yunluo Linux - Native Arch Linux for Redmi Pad
 
-Native Arch Linux OS for Redmi Pad (Yunluo) tablet.
-
-This project aims to bring native Linux support to the Xiaomi Redmi Pad tablet.
+This project aims to bring native Arch Linux to the Xiaomi Redmi Pad (codename: yunluo).
 
 ## Status
-🚧 Under active development
+🚧 Project is under active development
 
-## Quick Info
-- **Device**: Xiaomi Redmi Pad (yunluo)
+## Device Information
+- **Device**: Xiaomi Redmi Pad
+- **Codename**: yunluo
 - **SoC**: MediaTek Helio G99 (MT6789)
-- **Target OS**: Arch Linux ARM (aarch64)
-- **Installation Type**: Native (not virtual/container)
+- **Architecture**: ARM64 (aarch64)
 
-More documentation coming soon.
+## Documentation
+Documentation will be added as the project develops.
+
+## Contributing
+Contributions are welcome! Please check the issues and pull requests.
+
+## License
+To be determined
